@@ -45,7 +45,7 @@ const loginUser = asyncHandler(async( req, res ) => {
 
         if(isValidPass) {
             generatedToken(res, findtheUser._id)
-            res.status(201).json({_id:findtheUser._id, username: findtheUser.username, email: findtheUser.email})
+            res.status(201).json({_id:findtheUser._id, username: findtheUser.username, email: findtheUser.email, isAdmin: findtheUser.isAdmin})
             return 
         }
     }
@@ -54,4 +54,12 @@ const loginUser = asyncHandler(async( req, res ) => {
 
 })
 
-export {createUser, loginUser}
+const logOutCurrentUser = asyncHandler(async(req, res) => {
+    res.cookie("jwt","", {
+        httpOnly: true,
+        expires: new Date(0),
+    });
+    res.status(200).json({ message: "Logged out successfully" })
+})
+
+export {createUser, loginUser, logOutCurrentUser}
