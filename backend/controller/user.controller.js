@@ -36,13 +36,15 @@ const createUser = asyncHandler(async (req, res) =>{
 })
 
 const loginUser = asyncHandler(async( req, res ) => {
+    console.log('--->>>>>>>>>>>>>>>>>>>>>',req.body)
     const { email, password } = req.body;
 
     const findtheUser = await User.findOne({email});
+    console.log(findtheUser)
 
     if(findtheUser) {
         const isValidPass = await bcrypt.compare(password, findtheUser.password)
-
+         console.log('😎😎😎😎',isValidPass)
         if(isValidPass) {
             generatedToken(res, findtheUser._id)
             res.status(201).json({_id:findtheUser._id, username: findtheUser.username, email: findtheUser.email, isAdmin: findtheUser.isAdmin})
